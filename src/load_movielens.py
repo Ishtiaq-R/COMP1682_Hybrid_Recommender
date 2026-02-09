@@ -1,9 +1,7 @@
 from pathlib import Path
 import pandas as pd
 
-# =========================
-# DATASET SWITCH
-# =========================
+
 USE_20M = True  # set to False to go back to MovieLens 1M
 
 BASE_DIR = Path("data/raw/movielens")
