@@ -9,16 +9,14 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 from src.load_movielens import load_ratings, load_movies
 
-# Optional TMDB enrichment for explanations
+# TMDB enrichment for explanations
 try:
     from src.load_tmdb import load_tmdb_metadata
 except Exception:  # pragma: no cover
     load_tmdb_metadata = None
 
 
-# -------------------------
-# CACHES (process lifetime)
-# -------------------------
+
 _movies_cache: pd.DataFrame | None = None
 _ratings_cache: pd.DataFrame | None = None
 
@@ -330,3 +328,4 @@ def recommend_hybrid(
 if __name__ == "__main__":
     df = recommend_hybrid(user_id=1, alpha=0.6, top_n=10)
     print(df.to_string(index=False))
+
