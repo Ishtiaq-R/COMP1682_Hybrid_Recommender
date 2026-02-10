@@ -56,7 +56,7 @@ def cached_catalog():
 st.set_page_config(page_title="Hybrid Movie & TV Recommender", layout="centered")
 
 st.title("Hybrid Movie & TV Recommender")
-st.write("Search a title, pick it, then get recommendations with reasons.")
+st.write("Search a title of your choice, then get recommendations with reasons.")
 
 # Cache reset (helps after catalog.py changes)
 if st.button("Reset search cache"):
@@ -159,3 +159,4 @@ with st.expander("Advanced: MovieLens evaluation mode"):
             df = df.drop(columns=["score"])
 
         render_recommendations(df, "Hybrid recommendations")
+
