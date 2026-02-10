@@ -10,9 +10,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from src.load_movielens import load_movies, load_ratings
 
 
-# -------------------------
-# CACHES (process lifetime)
-# -------------------------
+
 _movies_cache: pd.DataFrame | None = None
 _vec_cache: TfidfVectorizer | None = None
 _X_cache = None
@@ -139,6 +137,22 @@ def recommend_similar_title(
     cand = movies[["movieId", "title", "genres"]].copy()
     cand["sim"] = sims
     cand = cand[cand["movieId"] != seed_movie_id]
+    # Family friendly auto-filter
+    seed_g = set(str(seed_row["genres"]).split("|"))
+    family_seed = bool(seed_g.intersection({"Animation", "Children", "Family"}))
+
+    if family_seed:
+        allow = {"Animation", "Children", "Family", "Adventure", "Comedy", "Fantasy"}
+        block = {"Horror", "Crime", "Thriller", "War", "Mystery"}
+
+        def _ok(genres: str) -> bool:
+            g = set(str(genres).split("|"))
+            if g.intersection(block):
+                return False
+            return bool(g.intersection(allow))
+
+        cand = cand[cand["genres"].apply(_ok)]
+
 
     cand = cand.merge(stats, on="movieId", how="left")
     cand["avg_rating"] = pd.to_numeric(cand["avg_rating"], errors="coerce").fillna(0.0)
