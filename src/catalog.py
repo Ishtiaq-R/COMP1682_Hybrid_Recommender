@@ -39,9 +39,7 @@ def get_catalog(
     if _catalog_cache is not None:
         return _catalog_cache
 
-    # -------------------------
-    # MOVIES (MovieLens)
-    # -------------------------
+
     movies = load_movies().copy()
     movies["title"] = movies["title"].astype(str)
     movies["genres"] = movies["genres"].fillna("Unknown").astype(str)
@@ -71,9 +69,7 @@ def get_catalog(
     movies_out["popularity"] = 0.0
     movies_out["vote_count"] = movies["rating_count"].astype(float)
 
-    # -------------------------
-    # TV SHOWS (TMDB)
-    # -------------------------
+
     tv = load_tv_shows().copy()
 
     if min_tv_votes > 0 and "vote_count" in tv.columns:
@@ -91,9 +87,7 @@ def get_catalog(
     tv_out["popularity"] = tv["popularity"].astype(float)
     tv_out["vote_count"] = tv["vote_count"].astype(float)
 
-    # -------------------------
-    # COMBINE
-    # -------------------------
+
     catalog = pd.concat([movies_out, tv_out], ignore_index=True)
 
     catalog = catalog.dropna(subset=["display"])
@@ -109,3 +103,4 @@ def get_catalog(
 
     _catalog_cache = catalog.reset_index(drop=True)
     return _catalog_cache
+
