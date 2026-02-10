@@ -2,7 +2,7 @@ from pathlib import Path
 import pandas as pd
 
 
-USE_20M = True  # set to False to go back to MovieLens 1M
+USE_20M = True  
 
 BASE_DIR = Path("data/raw/movielens")
 
@@ -44,7 +44,6 @@ def load_movies():
 
 
 def load_users():
-    # MovieLens 20M does not provide users.csv
     if USE_20M:
         return None
     else:
